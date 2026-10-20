@@ -32,6 +32,21 @@
   <title>Тренировки</title>
   <link rel="manifest" href="manifest.json">
   <style>html,body{background:#141414;margin:0}</style>
+  <script>
+    // Самоочистка от service worker'ов прошлых версий: они кэшировали старые
+    // файлы и мешали обновлениям. Новая версия работает без SW совсем.
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.getRegistrations().then(function(rs) {
+        rs.forEach(function(r) { r.unregister(); });
+      });
+      if (window.caches) {
+        caches.keys().then(function(ks) {
+          ks.forEach(function(k) { caches.delete(k); });
+        });
+      }
+    }
+  </script>
+
 </head>
 <body>
   <!--
